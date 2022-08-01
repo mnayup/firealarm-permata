@@ -4,6 +4,7 @@ import DataTable from 'react-data-table-component';
 import axios from 'axios';
 import  io  from 'socket.io-client';
 import swal from 'sweetalert';
+import { alamat } from '../connection/url';
 
 // A super simple expandable component.
 // const ExpandedComponent = ({ data }) => <pre>{JSON.stringify(data, null, 2)}</pre>;
@@ -13,7 +14,7 @@ import swal from 'sweetalert';
 //   selectAllRowsItem: true,
 //   selectAllRowsItemText: 'Todos',
 // }
-const socket = io('http://192.168.100.78:5000',{});
+const socket = io(alamat,{});
 
   export default function StatusMonitoring() {
     const [dataStatusCabang,setDataStatusCabang] = useState([])
@@ -21,7 +22,7 @@ const socket = io('http://192.168.100.78:5000',{});
     const getStatusCabang = () => {
       axios({
         method: 'get',
-        url: 'http://192.168.100.78:5000/notifonline',
+        url: alamat+'/notifonline',
       })
         .then((response)=> {
           // console.log(response.data.length)
@@ -43,7 +44,7 @@ const socket = io('http://192.168.100.78:5000',{});
     useEffect(()=>{
       getStatusCabang()
       socket.on('infoSTCABANGONLINE',(argumen) => {
-        console.log(argumen, "<<<<<")
+        // console.log(argumen, "<<<<<")
         setDataStatusCabang(argumen)
       })
 

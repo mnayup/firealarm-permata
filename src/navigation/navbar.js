@@ -5,6 +5,7 @@ import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate,NavLink } from "react-router-dom";
+import { alamat } from '../connection/url';
 
 const navigation = [
   { name: 'Dashboard', href: '/', current: false },
@@ -19,7 +20,7 @@ export default function Navbar() {
   const [name, setName] = useState("");
   const Logout = async () => {
     try {
-      await axios.delete("http://192.168.100.78:5000/logout");
+      await axios.delete(alamat+"/logout");
       history("/login");
       await localStorage.removeItem("nama");
       await localStorage.removeItem("refreshtoken");

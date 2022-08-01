@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React,{useEffect,useState} from 'react';
 import swal from 'sweetalert';
+import { alamat } from '../connection/url';
 
 const options = [
     'ar3rfa', 'af3rst', 'jgju6u', 'jrfjyb3', 'jfg5yj',
@@ -41,7 +42,7 @@ const options = [
     const getEditCabang = () => {
       axios({
         method: 'get',
-        url: 'http://192.168.100.78:5000/notsigned',
+        url: alamat+'/notsigned',
       })
         .then((response)=> {
           // let tmp = response.data.map((val,index)=>{
@@ -106,7 +107,7 @@ const options = [
           e.preventDefault();
           axios({
             method: "post",
-            url: "http://192.168.100.78:5000/updateperangkat",
+            url: alamat+"/updateperangkat",
             data: {
               cabang: namaCabang,
               kode_perangkat: kodePerangkat,

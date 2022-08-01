@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React,{useEffect,useState} from 'react';
 import swal from 'sweetalert';
+import { alamat } from '../connection/url';
 
   
   export default function DeleteDevicesForm() {
@@ -24,14 +25,13 @@ import swal from 'sweetalert';
     }
     
     const getEditCabang = () => {
-      
       axios({
         method: 'get',
-        url: 'http://192.168.100.78:5000/cabang',
+        url: alamat+'/cabang',
       })
         .then((response)=> {
           // console.log("response.data")
-          // console.log(response.data)
+          console.log(response.data,"Penghapusan Cabang - Nama Cabang")
           if(response.data.length ===0)
           {
             swal({
@@ -75,7 +75,7 @@ import swal from 'sweetalert';
           e.preventDefault();
           axios({
             method: "post",
-            url: "http://192.168.100.78:5000/deletecabang",
+            url: alamat+"/deletecabang",
             data: {
               cabang: namaCabang,
             },

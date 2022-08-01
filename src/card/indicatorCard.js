@@ -2,17 +2,22 @@ import React,{useEffect,useState} from 'react';
 import axios from 'axios';
 import { io } from 'socket.io-client';
 import swal from 'sweetalert';
+import Swal from 'sweetalert2';
+import { alamat } from '../connection/url';
 
-const socket = io('http://192.168.100.78:5000',{});
+const socket = io(alamat,{});
 
   export default function IndicatorCard() {
+    // const [dataLoading,setLoading] = useState(false)
     const [dataStatusCabang,setIndicatorCabang] = useState({})
     const getIndicatorCabang = () => {
       axios({
         method: 'get',
-        url: 'http://192.168.100.78:5000/notifall',
+        url: alamat+'/notifall',
       })
-        .then((response)=> {
+        .then(async(response)=> {
+          console.log("ttutp")
+          Swal.close()
           setIndicatorCabang(response.data)
         }).catch((err)=>{
           console.log("Gagal",err)
@@ -29,9 +34,52 @@ const socket = io('http://192.168.100.78:5000',{});
     }
 
     useEffect(()=>{
-      getIndicatorCabang()
-     
+
+      // setLoading(true)
+      // if(!dataLoading)
+      // {
+      //   let timerInterval
+      //   Swal.fire({
+      //     title: 'Loading',
+      //     // html: 'I will close in <b></b> milliseconds.',
+      //     // timer: 2000,
+      //     // timerProgressBar: true,
+      //     didOpen: () => {
+      //       console.log("didOpen")
+      //       Swal.showLoading()
+      //       // const b = Swal.getHtmlContainer().querySelector('b')
+      //       // timerInterval = setInterval(() => {
+      //       //   b.textContent = Swal.getTimerLeft()
+      //       // }, 100)
+      //     },
+      //     willClose: () => {
+      //       console.log("willclose")
+      //       // clearInterval(timerInterval)
+      //       // Swal.DismissReason.backdrop
+      //       setLoading=false
+      //     }
+      //   }).then((result) => {
+      //     console.log("then")
+      //     /* Read more about handling dismissals below */
+      //     // if (result.dismiss === Swal.DismissReason.timer) {
+      //     //   console.log('I was closed by the timer')
+      //     // }
+      //     Swal.close()
+      //   })
+      // }
+      Swal.fire({
+  title:"loading...",
+  didOpen(){
+    Swal.showLoading()
+  },
+  allowOutsideClick:false,
+  allowEscapeKey:false,
+  allowEnterKey:false
+  
+})
+      // getIndicatorCabang()
       socket.on('infoSCABANGKEBAKARAN',(argumen) => {
+
         console.log(argumen, "&&&&&&")
         setIndicatorCabang(argumen)
         if(argumen.kebakaran >0)
@@ -43,12 +91,15 @@ const socket = io('http://192.168.100.78:5000',{});
           button: "OK",
         });
         }
+        Swal.close();
       })
       socket.on('infoSCABANG',(argumen) => {
-        console.log(argumen, "&&&&&&")
+        console.log(argumen, ">>>>>>>>>>>>>>>>>>>>>>>")
         setIndicatorCabang(argumen)
+        Swal.close();
       })
       return () => {
+        socket.off("infoSCABANGKEBAKARAN")
         socket.off("infoSCABANG")
       }
     },[])

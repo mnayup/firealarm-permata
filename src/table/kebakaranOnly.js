@@ -3,11 +3,12 @@ import React,{useEffect,useState} from 'react';
 import DataTable from 'react-data-table-component';
 import axios from 'axios';
 import io from 'socket.io-client';
+import { alamat } from '../connection/url';
 
 // A super simple expandable component.
 // const ExpandedComponent = ({ data }) => <pre>{JSON.stringify(data, null, 2)}</pre>;
 
-const socket = io('http://192.168.100.78:5000',{});
+const socket = io(alamat,{});
 
   export default function KebakaranOnly() {
     const [dataStatusCabang,setDataStatusCabang] = useState([])
@@ -15,7 +16,7 @@ const socket = io('http://192.168.100.78:5000',{});
     const getStatusCabang = () => {
       axios({
         method: 'get',
-        url: 'http://192.168.100.78:5000/notifkebakaran',
+        url: alamat+'/notifkebakaran',
       })
         .then((response)=> {
           // console.log(response.data.length)

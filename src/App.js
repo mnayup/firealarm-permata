@@ -18,7 +18,9 @@ function App() {
         <Navbar/>
       </navbar> */}
         <Routes>
-          <Route path="/login" element={<Login/>} />
+          <Route path="/login" 
+          
+          element={<Login/>} />
           <Route
             path="/hapusCabang"
             element={
@@ -85,6 +87,23 @@ function App() {
   );
 }
 
+function HandleLogin(){
+  const [loading, setLoading] = useState(true);
+  const [auth, setAuth] = useState(false);
+  const cekToken = async () => {
+    let token = await localStorage.getItem("refreshtoken");
+    // console.log(token);
+    if (token) {
+      setAuth(true);
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  };
+  useEffect(()=>{
+cekToken()
+  })
+}
 function PrivateRoute({ children }) {
   const [loading, setLoading] = useState(true);
   const [auth, setAuth] = useState(false);

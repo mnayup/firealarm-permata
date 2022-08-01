@@ -1,12 +1,14 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {Link} from "react-router-dom";
 import swal from 'sweetalert';
+import { alamat } from '../connection/url';
 
 const Login =() => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [token,setToken] = useState(false)
     const [msg, setMsg] = useState("");
     const history = useNavigate();
     const Auth = async (e) => {
@@ -14,14 +16,14 @@ const Login =() => {
   
       axios({
         method: "post",
-        url: "http://192.168.100.78:5000/login",
+        url: alamat+"/login",
         data: {
           username: username,
           password: password,
         },
       })
         .then(async (respon) => {
-          console.log(respon.data);
+          // console.log(respon.data);
           await localStorage.setItem("refreshtoken", respon.data.accessToken);
           history("/");
         })
@@ -40,6 +42,19 @@ const Login =() => {
           }
         });
     };
+    const cekStatusToken =async()=>{
+      let token = await localStorage.getItem("refreshtoken");
+      if(!token){
+        setToken(false)
+      }else{
+        setToken(true)
+      }
+    }
+
+    useEffect(()=>{
+cekStatusToken()
+    },[])
+
     return (
         <div style={{backgroundColor:'grey',height:'100vh',width:'100vw',display: 'flex',
         alignItems: 'center',
